@@ -3,6 +3,7 @@
 import logging
 import sys
 import os
+import shutil
 from datetime import datetime
 import subprocess as sub
 
@@ -29,9 +30,19 @@ import obfuscator_asset
 import obfuscator_intercept
 import obfuscator_lib
 
-base_dir = os.path.abspath(os.path.dirname(__file__))
-obfuscator_resource_dir = base_dir + 'obfuscators'
-obfuscator_log_file = base_dir + 'obfuscators.log'
+base_dir = os.path.join(os.path.abspath(os.path.dirname(__file__)),'..')
+temp_dir = os.path.join(base_dir, 'temp')
+obfuscator_resource_dir = os.path.join(base_dir, 'obfuscators')
+obfuscator_log_file = os.path.join(base_dir, 'obfuscators.log')
+
+class config(object):
+    apktool_path = "java -jar {0}".format(os.path.join(base_dir, 'apktool', 'apktool_2.2.4.jar'))
+    jarsigner_path = "jarsigner"
+    zipalign_path = os.path.join(base_dir, "apktool", "zipalign")
+    if os.name == 'nt':
+        jarsigner_path = r'"c:\Program Files\Java\jdk1.8.0_111\bin\jarsigner.exe"'
+        zipalign_path = "C:\\users\\aleksandr.pilgun\\appdata\\local\\android\\sdk\\build-tools\\25.0.1\\zipalign.exe"
+        
 
 debug = False
 cleanup = True
@@ -57,19 +68,32 @@ def clean_temp(sample_tf_dir):  # Clear the temporary support directory
     try:
         if enable_logging:
             u.logger('Directory cleaned: ' + sample_tf_dir)
-        popen('rm -rf ' + sample_tf_dir + '/app')
+        app_dir = os.path.join(sample_tf_dir, 'app')
+        rm_tree(app_dir)
     except OSError as ex:
         raise e.OpenToolException(str(ex) + '\nUnable to clean ' + sample_tf_dir)
 
 
-def backsmali(sample_tf_dir, sample_file_name):  # Backsmali an apk file
+def rm_tree(path):
+    if os.path.isdir(path):
+        if os.name == 'nt':
+            #Hack for Windows. Shutil can't remove files with a path longer than 260.
+            cmd = "rd {0} /s /q".format(path)
+            os.system(cmd)
+        else:
+            shutil.rmtree(path)
+
+
+def backsmali(unpack_dir, apk_path):  # Backsmali an apk file
     try:
         if enable_logging:
-            u.logger('Backsmali: ' + sample_file_name + ' into ' + sample_tf_dir)
-        popen('apktool d --force --no-debug-info ' + sample_file_name + ' ' + sample_tf_dir + '/app')
-        if os.path.isdir(u.base_dir()+'/smali/com'):
+            u.logger('Backsmali: ' + apk_path + ' into ' + unpack_dir)
+        cmd = "{0} d --force --no-debug-info -o {1} {2}".format(config.apktool_path,
+            os.path.join(unpack_dir,'app'),  apk_path)
+        popen(cmd)
+        if os.path.isdir(os.path.join(u.base_dir(),'smali','com')):
             u.main_exec_dir = 'com'
-        elif os.path.isdir(u.base_dir()+'/smali/org'):
+        elif os.path.isdir(os.path.join(u.base_dir(),'smali','org')):
             u.main_exec_dir = 'org'
         else:
             u.main_exec_dir = ''
@@ -81,7 +105,9 @@ def smali(sample_tf_dir, sample_file_name):  # Smali an apk file
     try:
         if enable_logging:
             u.logger('Smali: ' + sample_file_name + ' from ' + sample_tf_dir)
-        popen('apktool b --force-all ' + sample_tf_dir + '/app' + ' ' + sample_file_name)
+        cmd = "{0} b --force-all -o {1} {2}".format(config.apktool_path, 
+            sample_file_name, os.path.join(sample_tf_dir, 'app'))
+        popen(cmd)
     except OSError as ex:
         raise e.OpenToolException(str(ex) + '\nUnable to smali ' + sample_file_name + ' from ' + sample_tf_dir)
 
@@ -90,7 +116,9 @@ def sign_apk(sample_file_name):  # Sign an apk file with a SHA1 key
     try:
         if enable_logging:
             u.logger('Sign: ' + sample_file_name)
-        popen('jarsigner -sigalg MD5withRSA -digestalg SHA1 -keystore ' + obfuscator_resource_dir + '/resignKey.keystore -storepass resignKey ' + sample_file_name + ' resignKey')
+        popen(config.jarsigner_path + ' -sigalg MD5withRSA -digestalg SHA1 -keystore ' +
+            os.path.join(obfuscator_resource_dir,'resignKey.keystore') + 
+            ' -storepass resignKey ' + sample_file_name + ' resignKey')
     except OSError as ex:
         raise e.OpenToolException(str(ex) + '\nUnable to sign ' + sample_file_name)
 
@@ -99,9 +127,9 @@ def zip_align(sample_file_name):  # Align the file
     try:
         if enable_logging:
             u.logger('Zip: ' + sample_file_name)
-        popen('cp ' + sample_file_name + ' ' + sample_file_name + '_old.apk')
-        popen('zipalign -f 8 ' + sample_file_name + '_old.apk' + ' ' + sample_file_name)
-        popen('rm -f ' + sample_file_name + '_old.apk')
+        u.copy_file(sample_file_name,  sample_file_name + '_old.apk')
+        popen(config.zipalign_path + ' -f 8 ' + sample_file_name + '_old.apk' + ' ' + sample_file_name)
+        os.remove(sample_file_name + '_old.apk')
     except OSError as ex:
         raise e.OpenToolException(str(ex) + '\nUnable to zipalign ' + sample_file_name)
 
@@ -110,7 +138,9 @@ def design_apk(sample_file_name):  # Remove a signature from an apk file
     try:
         if enable_logging:
             u.logger('DeSign: ' + sample_file_name)
-        popen('zip -d ' + sample_file_name + ' /META-INF/*')  # Delete the META-INF folder from the apk root
+        #NOTE: we dont need to remove META-INF because it will be just overwritten during signing
+        #popen("rd /s /q {0}".format(os.path.join(sample_file_name, 'META-INF')))
+        #popen('zip -d ' + sample_file_name + ' /META-INF/*')  # Delete the META-INF folder from the apk root
     except OSError as ex:
         raise e.OpenToolException(str(ex) + '\nUnable to delete META-INF from ' + sample_file_name)
 
@@ -119,7 +149,7 @@ def init(sample_tf_dir):  # Initialize the obfuscator routine
     reload(sys)
     sys.setdefaultencoding('utf-8')
     u.obfuscator_dir = obfuscator_resource_dir
-    u.global_dir = sample_tf_dir + '/app'
+    u.global_dir = os.path.join(sample_tf_dir, 'app')
     logging.basicConfig(filename=obfuscator_log_file, level=logging.DEBUG)
     if enable_logging:
         u.logger('Obfuscators Initialize: ' + u.obfuscator_dir + ' ' + u.global_dir)
@@ -370,32 +400,34 @@ obfuscator_mapping = {
 }
 
 
-def clean_apk(sample_file_name):  # Clear the temporary apk
+def clean_apk(apk_path):  # Clear the temporary apk
     try:
         if enable_logging:
-            u.logger('Apk cleaned: ' + sample_file_name)
-        popen('rm -f ' + sample_file_name)
+            u.logger('Apk cleaned: ' + apk_path)
+        #popen('rm -f ' + apk_path)
+        os.remove(apk_path)
+        #os.system("del /f /q {0}".format(apk_path))
     except OSError as ex:
-        raise e.OpenToolException(str(ex) + '\nUnable to clean ' + sample_file_name)
+        raise e.OpenToolException(str(ex) + '\nUnable to clean ' + apk_path)
 
 
-def obfuscate_sample(sample_file_name, obfuscator_list, sample_tf_dir):
+def obfuscate_sample(apk_path, obfuscator_list, sample_tf_dir):
     '''This function obfucate a sample with the obfuscators in the list using a temporary directory as support'''
     init(sample_tf_dir)
     if enable_logging:
-        u.logger('Obfuscate Request: %s - %s - %s' % (sample_file_name, obfuscator_list, sample_tf_dir))
+        u.logger('Obfuscate Request: %s - %s - %s' % (apk_path, obfuscator_list, sample_tf_dir))
     else:
         u.logger('Obfuscate Request')
     if not debug:
         clean_temp(sample_tf_dir)
-    backsmali(sample_tf_dir, sample_file_name)
+    backsmali(sample_tf_dir, apk_path)
     start_time = datetime.utcnow()
     if enable_logging:
         u.logger('Obfuscate Start: ' + str(start_time))
     try:
         for obfuscator_item in obfuscator_list:
             obfuscator_method = obfuscator_mapping[obfuscator_item]
-            obfuscator_method(sample_file_name, sample_tf_dir)
+            obfuscator_method(apk_path, sample_tf_dir)
     except KeyError as ex:
         raise e.RunningObfuscatorException('Invalid obfuscator id ' + str(ex))
     end_time = datetime.utcnow()
@@ -403,22 +435,22 @@ def obfuscate_sample(sample_file_name, obfuscator_list, sample_tf_dir):
         u.logger('Obfuscate Stop: ' + str(end_time))
     u.logger('Obfuscate Time: ' + str(end_time-start_time))
     if cleanup:
-        sample_ob_file_name = sample_file_name + 'Ob'
+        sample_ob_file_name = apk_path + 'Ob'
     else:
-        sample_ob_file_name = sample_file_name
+        sample_ob_file_name = apk_path
     smali(sample_tf_dir, sample_ob_file_name)
     sign_apk(sample_ob_file_name)
     if not debug:
         clean_temp(sample_tf_dir)
         if cleanup:
-            clean_apk(sample_file_name)
+            clean_apk(apk_path)
     u.logger('### SUCCESS ### {' + str(end_time-start_time) + '}')
 
 
-def apply_dir(filename, obfuscator_to_apply, mode=0, retry=0):
+def apply_dir(apk_path, obfuscator_to_apply, mode=0, retry=0):
     try:
-        obfuscate_sample(adam_base_dir + 'input/' + filename, obfuscator_to_apply, adam_base_dir + 'temp/' + filename[:-4])
-        sys.exit(0)
+        dir_path, filename = os.path.split(apk_path)
+        obfuscate_sample(apk_path, obfuscator_to_apply, os.path.join(temp_dir, filename[:-4]))
     except e.AndroidLimitException as ex:
         u.logger('### ERROR ### ' + str(ex) + ' ### ERROR ###')
         u.logger('### WARNING ###')
@@ -427,7 +459,7 @@ def apply_dir(filename, obfuscator_to_apply, mode=0, retry=0):
         elif mode == 1:
             apply_dir(filename, [o for o in obfuscator_to_apply if o != 'Indirections'], 2)
         else:
-            sys.exit(1)
+            print("mode!=0?")
     except e.AndroidRandomException as ex:
         u.logger('### ERROR ### ' + str(ex) + ' ### ERROR ###')
         if retry == 0:
@@ -435,11 +467,9 @@ def apply_dir(filename, obfuscator_to_apply, mode=0, retry=0):
             apply_dir(filename, obfuscator_to_apply, mode, retry + 1)
         else:
             u.logger('### FAILURE ###')
-            sys.exit(2)
     except Exception as ex:
         u.logger('### ERROR ### ' + str(ex) + ' ### ERROR ###')
         u.logger('### FAILURE ###')
-        sys.exit(2)
 
 
 '''obfuscator_to_apply = ['Resigned',

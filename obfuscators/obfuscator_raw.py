@@ -7,10 +7,10 @@ def append_defunct_class(raw_file):
     for smali_line in u.get_setter_resource_flag():
         if '#RawList' in smali_line:
             for file_id in raw_file:
-                print '    const v0, ' + file_id
-                print '    invoke-static {v0}, Landroid/content/res/RawIdList;->addToList(I)V'
+                print('    const v0, ' + file_id)
+                print('    invoke-static {v0}, Landroid/content/res/RawIdList;->addToList(I)V')
         elif '#Raw' in smali_line:
-                print '    const/4 v0, 0x1'
+                print('    const/4 v0, 0x1')
         else:
             print smali_line,
 

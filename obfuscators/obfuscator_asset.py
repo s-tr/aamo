@@ -94,4 +94,4 @@ def obfuscate():
 def move_asset_class(class_name):
     asset_class = u.get_asset_class()  # Load the decrypt class from file
     asset_class = asset_class.replace('AssetManagerOb', class_name)  # Random key
-    u.write_text_file(u.base_dir()+'/smali/android/content/res/' + class_name + '.smali', asset_class)  # Write the class file
+    u.write_text_file(os.path.join(u.base_dir(),'smali','android','content','res', class_name + '.smali'), asset_class)  # Write the class file

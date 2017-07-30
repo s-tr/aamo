@@ -9,10 +9,12 @@ import fileinput
 import base64
 import md5
 from Crypto.Cipher import DES
+import os.path
+import shutil
 
 
 def logger(log_info):  # Log
-    logging.debug('[' + base_dir().split('/')[-2] + ']:' + log_info)
+    logging.debug('[' + os.path.split(base_dir())[0] + ']:' + log_info)
 
 
 def shuffle_list(data_list):  # Shuffle a list
@@ -70,7 +72,7 @@ def get_valid_op_code():  # Get the valid opcode list
 def move_decrypt_method():  # Move the decription routine into the apk class tree
     try:
         method_name = 'nvlEStringManager.smali'
-        os.system('cp -R '+ob_dir() + '/' + method_name + ' ' + base_dir() + '/smali/' + method_name)
+        copy_file(join(ob_dir(), method_name), join(base_dir(), 'smali', method_name))
     except OSError as ex:
         raise e.OpenToolException(str(ex) + '\nUnable to move Decrypytion Method')
 
@@ -85,7 +87,7 @@ def get_defunct_method():  # Return the defunct method
 
 def get_text_file(file_name):  # Get a text from a file
     try:
-        with open(ob_dir() + '/' + file_name) as file_list:
+        with open(os.path.join(ob_dir(), file_name)) as file_list:
             return file_list.read()
     except IOError as ex:
         raise e.LoadFileException(str(ex) + '\nUnable to load ' + file_name)
@@ -115,29 +117,29 @@ def load_xml_file():  # Load all the xml files
 
 
 def load_resource_file():  # Load all the resource files
-    return load_files('/res/', '*', 'values')
+    return load_files('res', '*', 'values')
 
 
 def load_res_repository():  # Load the public resource repository
-    return load_xml('/res/values/public.xml')
+    return load_xml(os.path.join('res', 'values', 'public.xml'))
 
 
 def save_res_repository(xml_file):  # Save the public resource repository
-    save_xml('/res/values/public.xml', xml_file)
+    save_xml(os.path.join('res', 'values', 'public.xml'), xml_file)
 
 
 def load_manifest():  # Load the apk manifest file
-    return load_xml('/AndroidManifest.xml')
+    return load_xml('AndroidManifest.xml')
 
 
 def save_manifest(xml_file):  # Save the apk manifest file
-    save_xml('/AndroidManifest.xml', xml_file)
+    save_xml('AndroidManifest.xml', xml_file)
 
 
 def load_xml(file_name):  # Load an XML file
     try:
         parser = ET.XMLParser(encoding="utf-8")
-        return ET.parse(base_dir() + file_name, parser=parser)
+        return ET.parse(os.path.join(base_dir(), file_name), parser=parser)
     except IOError as ex:
         if ex.errno == 2:
             raise e.FileNotFound
@@ -147,17 +149,17 @@ def load_xml(file_name):  # Load an XML file
 
 def save_xml(file_name, xml_file):  # Save an XML file
     try:
-        xml_file.write(base_dir() + file_name)
+        xml_file.write(os.path.join(base_dir(), file_name))
     except IOError as ex:
         raise e.LoadFileException(str(ex)+'\nUnable to save XML ' + base_dir() + file_name)
 
 
 def load_files(path_add, pattern, exclude_dir_prefix):  # Load all the files from a directory whic respect a pattern and does not start with a given prefix
-    return set(find_files(base_dir() + path_add, pattern, exclude_dir_prefix))
+    return set(find_files(os.path.join(base_dir(),path_add), pattern, exclude_dir_prefix))
 
 
 def get_file_name(file_path):  # Extract the last dir of a path
-    return file_path.split('/')[-1]
+    return os.path.basename(file_path)
 
 
 def get_file_info(file_name):  # Extract some file information from a path
@@ -188,11 +190,11 @@ def rename_dir(source_dir, dest_dir):  # Rename a directory
 
 
 def load_smali_dirs():  # Load all the class directory
-    return load_dirs('/smali', '/' + get_main_exec_dir())
+    return load_dirs('smali', get_main_exec_dir())
 
 
 def load_dirs(path_add, exclude_dir_prefix):  # Load all the subdirectories from a directory
-    return list(reversed(sorted(list(find_dir(base_dir() + path_add, exclude_dir_prefix)), key=len)))
+    return list(reversed(sorted(list(find_dir(os.path.join(base_dir(), path_add), exclude_dir_prefix)), key=len)))
 
 
 def find_dir(top_dir, exclude_dir_prefix):
@@ -207,8 +209,8 @@ def find_dir(top_dir, exclude_dir_prefix):
 
 def load_all_smali_dirs():  # Load all the class directory
     smali_dir_list = load_smali_dirs()
-    smali_dir_list.append(base_dir() + '/smali' + '/' + get_main_exec_dir())
-    smali_dir_list.append(base_dir() + '/smali')
+    smali_dir_list.append(os.path.join(base_dir(),'smali', get_main_exec_dir()))
+    smali_dir_list.append(os.path.join(base_dir() ,'smali'))
     return smali_dir_list
 
 
@@ -257,19 +259,21 @@ def random_res_interval():  # Randomize the number of new resource(s)
 
 
 def save_ids_repository(xml_file):  # Save the id resources repository
-    save_xml('/res/values/ids.xml', xml_file)
+    save_xml(os.path.join('res','values','ids.xml'), xml_file)
 
 
 def move_ids_xml():  # Move the id resources index into the value resource dir
     try:
-        os.system('cp -R ' + ob_dir() + '/ids.xml ' + base_dir() + '/res/values/ids.xml')
+        #windows
+        os.system("echo f | xcopy {0} {1}".format(os.path.join(ob_dir(),'ids.xml'), os.path.join(base_dir(),'res','values','ids.xml')))
+        #os.system('cp -R ' + ob_dir() + '/ids.xml ' + base_dir() + '/res/values/ids.xml') #unix
     except OSError as ex:
         raise e.OpenToolException(str(ex) + '\nUnable to move Ids xml file')
 
 
 def load_res_id_repository():  # Load the ids resource repository
     try:
-        return load_xml('/res/values/ids.xml')
+        return load_xml(join('res','values', 'ids.xml'))
     except e.LoadFileException:
         return None
     except e.FileNotFound:
@@ -277,7 +281,7 @@ def load_res_id_repository():  # Load the ids resource repository
 
 
 def load_asset_file():  # Load all the resource files
-    return load_files('/assets/', '*', '')
+    return load_files('assets', '*', '')
 
 
 def get_asset_file(file_name):
@@ -289,7 +293,7 @@ def write_asset_file(file_name, file_data):
 
 
 def load_asset_dirs():  # Load all the class directory
-    return load_dirs('/assets', '')
+    return load_dirs('assets', '')
 
 
 def is_number(s):
@@ -301,7 +305,7 @@ def is_number(s):
 
 
 def load_raw_file():  # Load all the resource files
-    return load_files('/res/raw/', '*', '')
+    return load_files(os.path.join('res','raw'), '*', '')
 
 
 main_exec_dir = ''
@@ -336,26 +340,38 @@ def md5_data(file_data, is_string=False):
 
 
 def move_res_manager():
-    os.system('mkdir -p ' + base_dir() + '/smali/android/app/')
-    os.system('cp -rf ' + ob_dir() + '/android/app/ActivityOb.smali ' + base_dir() + '/smali/android/app/ActivityOb.smali')
-    os.system('cp -rf  ' + ob_dir() + '/android/app/ServiceOb.smali ' + base_dir() + '/smali/android/app/ServiceOb.smali')
-    os.system('mkdir -p ' + base_dir() + '/smali/android/content/res')
-    os.system('cp -rf ' + ob_dir() + '/android/content/ContextWrapperOb.smali ' + base_dir() + '/smali/android/content/ContextWrapperOb.smali')
-    os.system('cp -rf ' + ob_dir() + '/android/content/res/Base16.smali ' + base_dir() + '/smali/android/content/res/Base16.smali')
-    os.system('cp -rf ' + ob_dir() + '/android/content/res/ResourcesOb.smali ' + base_dir() + '/smali/android/content/res/ResourcesOb.smali')
-    os.system('cp -rf ' + ob_dir() + '/android/content/res/StringUnescape.smali ' + base_dir() + '/smali/android/content/res/StringUnescape.smali')
-    os.system('cp -rf ' + ob_dir() + '/android/content/res/RawIdList.smali ' + base_dir() + '/smali/android/content/res/RawIdList.smali')
-    os.system('cp -rf ' + ob_dir() + '/android/content/res/LibOb.smali ' + base_dir() + '/smali/android/content/res/LibOb.smali')
+    mkdir(join(base_dir(), 'smali','android','app'))
+    copy_file(join(ob_dir(),'android', 'app', 'ActivityOb.smali'), join(base_dir(), 'smali', 'android', 'app', 'ActivityOb.smali'))
+    copy_file(join(ob_dir(), 'android', 'app','ServiceOb.smali'), join(base_dir(), 'smali', 'android', 'app', 'ServiceOb.smali'))
+    mkdir(join(base_dir(), 'smali', 'android', 'content', 'res'))
+    copy_file(join(ob_dir(), 'android','content', 'ContextWrapperOb.smali'), join(base_dir(), 'smali', 'android', 'content', 'ContextWrapperOb.smali'))
+    copy_file(join(ob_dir(), 'android', 'content', 'res', 'Base16.smali'), join(base_dir(), 'smali', 'android', 'content', 'res', 'Base16.smali'))
+    copy_file(join(ob_dir(), 'android', 'content', 'res', 'ResourcesOb.smali'), joint(base_dir(), 'smali', 'android', 'content', 'res', 'ResourcesOb.smali')) 
+    copy_file(join(ob_dir(), 'android', 'content', 'res', 'StringUnescape.smali'), join(base_dir(), 'smali', 'android', 'content', 'res', 'StringUnescape.smali'))
+    copy_file(join(ob_dir(), 'android', 'content', 'res', 'RawIdList.smali'), join(base_dir(), 'smali', 'android', 'content', 'res', 'RawIdList.smali'))
+    copy_file(join(ob_dir(), 'android', 'content', 'res', 'LibOb.smali'), join(base_dir(), 'smali', 'android', 'content', 'res', 'LibOb.smali'))
+
+def copy_file(src, dest):
+    if os.name == 'nt': # shutil does not work with really long pathes on Windows
+        #os.system("echo f | xcopy {0} {1}".format(src, dest))
+        os.system("copy /Y {0} {1}".format(src, dest))
+    else:
+        shutil.copyfile(src, dest)
+
+
+def mkdir(path):
+    if not os.path.isdir(path):
+        os.makedirs(path)
 
 
 def get_string_class():
-    os.system('mkdir -p ' + base_dir() + '/smali/android/content/res')
-    return get_text_file('android/content/res/StringManagerOb.smali')
+    mkdir(join(base_dir(), 'smali', 'android', 'content', 'res'))
+    return get_text_file(join('andoir', 'content', 'res', 'StringManagerOb.smali'))
 
 
 def get_asset_class():
-    os.system('mkdir -p ' + base_dir() + '/smali/android/content/res')
-    return get_text_file('android/content/res/AssetManagerOb.smali')
+    mkdir(join(base_dir(), 'smali', 'android', 'content','res'))
+    return get_text_file(join('android','content','res','AssetManagerOb.smali'))
 
 
 def get_setter_resource_flag():
@@ -363,7 +379,7 @@ def get_setter_resource_flag():
 
 
 def load_lib_file():  # Load all the resource files
-    return load_files('/lib/', 'lib*.so', '')
+    return load_files('lib', 'lib*.so', '')
 
 
 def write_lib_file(file_name, file_data):

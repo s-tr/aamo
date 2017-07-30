@@ -1,5 +1,6 @@
 import util as u
 import re
+import os
 
 
 def append_defunct_method(defunct_str, smali_file_list):
@@ -14,18 +15,17 @@ def append_defunct_method(defunct_str, smali_file_list):
 def append_defunct_class_now(base_dir, curr_dirr, incremental):
     """Append a random generated class file to the class tree"""
     class_path = curr_dirr.replace(base_dir, '')  # Remove the root reference
-    if class_path.startswith('/'):
-        class_path = class_path[1:]
+    class_path = os.path.relpath(curr_dirr, base_dir)
+    
     defunct_class = u.get_defunct_class()
     random_class_name = u.get_random(True, 16) + str(incremental)
-    if class_path != '':
-        class_path = class_path + '/'
-    defunct_class = defunct_class.replace('*ClassName*', class_path + random_class_name)  # Random class name
+    
+    defunct_class = defunct_class.replace('*ClassName*', os.path.join(class_path, random_class_name))  # Random class name
     defunct_class = defunct_class.replace('*String1*', u.get_random(True, 16))  # Random string
     defunct_class = defunct_class.replace('*String2*', u.get_random(True, 16))  # Random string
     defunct_class = defunct_class.replace('*MethodName*', u.get_random(True, 16))  # Random method
     defunct_class = defunct_class.replace('*SourceName*', u.get_random(True, 16))  # Random source
-    u.write_text_file(curr_dirr + '/' + random_class_name + '.smali', defunct_class)  # Write the class file
+    u.write_text_file(os.path.join(curr_dirr, random_class_name + '.smali'), defunct_class)  # Write the class file
 
 
 def append_defunct_class(smali_dir_list):

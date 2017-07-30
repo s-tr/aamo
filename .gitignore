@@ -102,3 +102,6 @@ ENV/
 
 input/
 temp/
+.vscode/
+diff/
+report/
