@@ -472,39 +472,29 @@ def apply_dir(apk_path, obfuscator_to_apply, mode=0, retry=0):
         u.logger('### FAILURE ###')
 
 
-'''obfuscator_to_apply = ['Resigned',
-                       'Alignment',
-                       'Rebuild',
-                       'Fields',
-                       'Debug',
-                       'Indirections',
-                       'Defunct',
-                       'StringEncrypt',
-                       'Renaming',
-                       'Reordering',
-                       'Goto',
-                       'ArithmeticBranch',
-                       'Nop',
-                       'Asset',
-                       'Intercept',
-                       'Raw',
-                       'Resource',
-                       'Lib',
-                       'Restring',
-                       'Manifest',
-                       'Reflection'
-                       ]
-'''
-
-obfuscator_to_apply = ['Lib'
-                       ]
-
-def main():
-    try:
-        apply_dir(sys.argv[1], obfuscator_to_apply)
-    except Exception, e:
-        return 1
-    return 0
+all_obfuscators = ['Resigned',
+                   'Alignment',
+                   'Rebuild',
+                   'Fields',
+                   'Debug',
+                   'Indirections',
+                   'Defunct',
+                   'StringEncrypt',
+                   'Renaming',
+                   'Reordering',
+                   'Goto',
+                   'ArithmeticBranch',
+                   'Nop',
+                   'Asset',
+                   'Intercept',
+                   'Raw',
+                   'Resource',
+                   'Lib',
+                   'Restring',
+                   'Manifest',
+                   'Reflection'
+                   ]
 
 if __name__ == '__main__':
-    sys.exit(main())
+    sys.stderr.write("This file is not meant to be run. Run run.main.py instead.")
+    sys.exit(1)
