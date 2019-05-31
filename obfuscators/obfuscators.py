@@ -40,9 +40,8 @@ class config(object):
     jarsigner_path = "jarsigner"
     zipalign_path = os.path.join(base_dir, "apktool", "zipalign")
     if os.name == 'nt':
-        jarsigner_path = r'"c:\Program Files\Java\jdk1.8.0_111\bin\jarsigner.exe"'
-        zipalign_path = "C:\\users\\aleksandr.pilgun\\appdata\\local\\android\\sdk\\build-tools\\25.0.1\\zipalign.exe"
-        
+        jarsigner_path = None or (sys.stderr.write("Provide a path for jarsigner in "+__file__+"\n"), sys.exit(1))
+        zipalign_path = None or (sys.stderr.write("Provide a path for zipalign in "+__file__+"\n"), sys.exit(1))
 
 debug = False
 cleanup = True
@@ -57,11 +56,11 @@ def popen(com_str):
         u.logger(err)
     if 'Exception' in out or 'Exception' in err:
         if 'method index is too large' in out or 'method index is too large' in err:
-            raise e.AndroidLimitException('Unable run :' + com_str)
+            raise e.AndroidLimitException('Method limit reached while running ' + com_str)
         elif 'java.lang.ArrayIndexOutOfBoundsException' in out or 'java.lang.ArrayIndexOutOfBoundsException' in err:
-            raise e.AndroidRandomException('Unable run :' + com_str)
+            raise e.AndroidRandomException('Exception occured while running ' + com_str)
         else:
-            raise e.RunningObfuscatorException('Unable run :' + com_str)
+            raise e.RunningObfuscatorException('Exception occured while running ' + com_str)
 
 
 def clean_temp(sample_tf_dir):  # Clear the temporary support directory
