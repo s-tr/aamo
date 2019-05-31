@@ -1,37 +1,28 @@
-from obfuscators import obfuscators
+from obfuscators import obfuscators, util
+import argparse as A
+import sys
 
 #Scripts applies obfuscation methods one by one.
 
-obfuscator_to_apply = ['Resigned',
-                       'Alignment',
-                       'Rebuild',
-                       'Fields',
-                       'Debug',
-                       'Indirections',
-                       'Defunct',
-                       'StringEncrypt',
-                       'Renaming',
-                       'Reordering',
-                       'Goto',
-                       'ArithmeticBranch',
-                       'Nop',
-                       'Asset',
-                       'Intercept',
-                       'Raw',
-                       'Resource',
-                       'Lib',
-                       'Restring',
-                       'Manifest',
-                       'Reflection'
-                       ]
-
-apk_paths = "c:\\projects\\aamo\\input\\0016A78BF0281D008A8280130137BB56FC9FEC998E861A6A3C6A0409202BBE52-{0}.apk"
-names = [(apk_paths.format(obf_proc), obf_proc) for obf_proc in obfuscator_to_apply]
-
 def main():
-    for n in names:
-        print(n)
-        obfuscators.apply_dir(n[0], [n[1]])
+    parser = A.ArgumentParser(description="Program for obfuscating APK files")
+    parser.add_argument('-i', '--infile', required=True, help="Input file name")
+    parser.add_argument('-o', '--outfile', required=False, help="Output file name. Defaults to input file name (i.e. in place obfuscate)")
+    parser.add_argument('obf_list', nargs='+', choices = obfuscators.all_obfuscators, metavar = 'OBFUSCATOR', help="List of obfuscators to apply.")
+    args = parser.parse_args()
+
+    infile = args.infile
+    outfile = args.outfile or args.infile
+    obf_list = args.obf_list
+    if(len(obf_list) != 0):
+        if(outfile != infile):
+            try:
+                util.copy_file(infile, outfile)
+            except Exception as e:
+                sys.stderr.write("Unable to perform copy from {0} to {1}", infile, outfile)
+                sys.exit(1)
+        obfuscators.apply_dir(outfile, obf_list)
+
 
 if __name__ == '__main__':
     main()
