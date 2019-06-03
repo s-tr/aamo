@@ -6,8 +6,8 @@
 # direct methods
 .method public static OFLog(Ljava/lang/String;Ljava/lang/String;)V
     .registers 2
-    .parameter "tag"
-    .parameter "msg"
+    
+    
 
     .prologue
     .line 28

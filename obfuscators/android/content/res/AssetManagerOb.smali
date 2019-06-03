@@ -16,7 +16,7 @@
 
 .method private static final getRawAuthority(Ljava/io/InputStream;)Ljava/io/InputStream;
     .locals 4
-    .parameter "is"
+    
 
     .prologue
     .line 30
@@ -54,8 +54,8 @@
 
 .method private static final getStorageEncryption(ILjava/lang/String;)Ljavax/crypto/Cipher;
     .locals 4
-    .parameter "mode"
-    .parameter "key"
+    
+    
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/security/InvalidKeyException;,
@@ -109,8 +109,8 @@
 
 .method public static final open(Landroid/content/res/AssetManager;Ljava/lang/String;)Ljava/io/InputStream;
     .locals 1
-    .parameter "am"
-    .parameter "name"
+    
+    
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -136,7 +136,7 @@
 
 .method private static final translateM(Ljava/lang/String;)Ljava/lang/String;
     .locals 7
-    .parameter "name"
+    
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/security/InvalidKeyException;,
@@ -237,7 +237,7 @@
 
 .method private static final traslate(Ljava/lang/String;)Ljava/lang/String;
     .locals 9
-    .parameter "name"
+    
 
     .prologue
     .line 38

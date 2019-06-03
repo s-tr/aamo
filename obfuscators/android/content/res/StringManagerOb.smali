@@ -16,7 +16,7 @@
 
 .method public static final convertToString(Ljava/lang/String;)Ljava/lang/String;
     .locals 4
-    .parameter "str"
+    
 
     .prologue
     .line 17
@@ -71,7 +71,7 @@
 
 .method private static final decode(Ljava/lang/String;)[B
     .locals 10
-    .parameter "s"
+    
 
     .prologue
     const/16 v9, 0x66
@@ -183,8 +183,8 @@
 
 .method private static final getStorageEncryption(ILjava/lang/String;)Ljavax/crypto/Cipher;
     .locals 4
-    .parameter "mode"
-    .parameter "key"
+    
+    
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/security/InvalidKeyException;,
@@ -238,7 +238,7 @@
 
 .method private static final unescapeJavaString(Ljava/lang/String;)Ljava/lang/String;
     .locals 10
-    .parameter "st"
+    
 
     .prologue
     const/16 v5, 0x5c

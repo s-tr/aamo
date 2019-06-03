@@ -16,8 +16,8 @@
 
 .method private static copy(Ljava/io/InputStream;Ljava/io/OutputStream;)V
     .locals 3
-    .parameter "input"
-    .parameter "output"
+    
+    
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -81,8 +81,8 @@
 
 .method private static copy(Ljava/lang/String;Ljava/lang/String;)V
     .locals 2
-    .parameter "input"
-    .parameter "output"
+    
+    
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -119,7 +119,7 @@
 
 .method private static final getRawAuthority(Ljava/io/InputStream;)Ljava/io/InputStream;
     .locals 4
-    .parameter "is"
+    
 
     .prologue
     .line 134
@@ -157,8 +157,8 @@
 
 .method private static final getStorageEncryption(ILjava/lang/String;)Ljavax/crypto/Cipher;
     .locals 4
-    .parameter "mode"
-    .parameter "key"
+    
+    
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/security/InvalidKeyException;,
@@ -212,7 +212,7 @@
 
 .method public static load(Ljava/lang/String;)V
     .locals 2
-    .parameter "libName"
+    
 
     .prologue
     .line 32
@@ -242,7 +242,7 @@
 
 .method private static loadFileIn(Ljava/lang/String;)Ljava/io/InputStream;
     .locals 2
-    .parameter "filename"
+    
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/FileNotFoundException;
@@ -268,7 +268,7 @@
 
 .method private static loadFileOut(Ljava/lang/String;)Ljava/io/FileOutputStream;
     .locals 2
-    .parameter "filename"
+    
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/FileNotFoundException;
@@ -290,7 +290,7 @@
 
 .method public static loadLibrary(Ljava/lang/String;)V
     .locals 4
-    .parameter "libName"
+    
 
     .prologue
     .line 40
@@ -372,7 +372,7 @@
 
 .method private static loading(Ljava/lang/String;)V
     .locals 5
-    .parameter "filename"
+    
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -462,8 +462,8 @@
 
 .method private static set(Ljava/lang/String;Ljava/lang/String;)V
     .locals 2
-    .parameter "libName"
-    .parameter "resultName"
+    
+    
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/io/IOException;
@@ -512,7 +512,7 @@
 
 .method private static final translateM(Ljava/lang/String;)Ljava/lang/String;
     .locals 7
-    .parameter "name"
+    
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/security/InvalidKeyException;,
@@ -619,7 +619,7 @@
 
 .method private static final traslate(Ljava/lang/String;)Ljava/lang/String;
     .locals 10
-    .parameter "name"
+    
 
     .prologue
     .line 54

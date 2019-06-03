@@ -31,7 +31,7 @@
 
 .method private static setStaticContext(Landroid/content/Context;)V
     .locals 0
-    .parameter "context"
+    
 
     .prologue
     .line 21
@@ -45,7 +45,7 @@
 # virtual methods
 .method protected attachBaseContext(Landroid/content/Context;)V
     .locals 1
-    .parameter "base"
+    
 
     .prologue
     .line 14

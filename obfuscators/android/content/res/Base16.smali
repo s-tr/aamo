@@ -58,7 +58,7 @@
 
 .method public static final decode(Ljava/lang/String;)[B
     .locals 10
-    .parameter "s"
+    
 
     .prologue
     const/16 v9, 0x66
@@ -170,7 +170,7 @@
 
 .method public static final encode([B)Ljava/lang/String;
     .locals 6
-    .parameter "byteArray"
+    
 
     .prologue
     .line 10

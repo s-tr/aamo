@@ -44,7 +44,7 @@
 
 .method private static final add(I)V
     .locals 2
-    .parameter "id"
+    
 
     .prologue
     .line 28
@@ -62,7 +62,7 @@
 
 .method public static final getSeverity(I)Z
     .locals 2
-    .parameter "id"
+    
 
     .prologue
     .line 32

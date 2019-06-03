@@ -6,9 +6,9 @@
 # direct methods
 .method public constructor <init>(Landroid/content/res/AssetManager;Landroid/util/DisplayMetrics;Landroid/content/res/Configuration;)V
     .locals 0
-    .parameter "assets"
-    .parameter "metrics"
-    .parameter "config"
+    
+    
+    
 
     .prologue
     .line 26
@@ -20,7 +20,7 @@
 
 .method public constructor <init>(Landroid/content/res/Resources;)V
     .locals 3
-    .parameter "res"
+    
 
     .prologue
     .line 30
@@ -44,7 +44,7 @@
 
 .method private final bindString(Ljava/lang/String;)Ljava/lang/String;
     .locals 4
-    .parameter "str"
+    
     .annotation build Landroid/annotation/SuppressLint;
         value = {
             "DefaultLocale"
@@ -104,7 +104,7 @@
 
 .method private final coerceToString(Ljava/lang/CharSequence;)Ljava/lang/String;
     .locals 2
-    .parameter "str"
+    
 
     .prologue
     .line 86
@@ -153,7 +153,7 @@
 
 .method private final coerceToString([Ljava/lang/CharSequence;)[Ljava/lang/String;
     .locals 5
-    .parameter "arr"
+    
 
     .prologue
     .line 96
@@ -209,7 +209,7 @@
 
 .method private final getRawAuthority(Ljava/io/InputStream;)Ljava/io/InputStream;
     .locals 4
-    .parameter "is"
+    
 
     .prologue
     .line 49
@@ -257,8 +257,8 @@
 
 .method private final getStorageEncryption(ILjava/lang/String;)Ljavax/crypto/Cipher;
     .locals 4
-    .parameter "mode"
-    .parameter "key"
+    
+    
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Ljava/security/InvalidKeyException;,
@@ -312,7 +312,7 @@
 
 .method private final traslate(Ljava/lang/String;)Ljava/lang/String;
     .locals 7
-    .parameter "name"
+    
 
     .prologue
     const/4 v3, 0x0
@@ -431,9 +431,9 @@
 # virtual methods
 .method public getIdentifier(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)I
     .locals 1
-    .parameter "name"
-    .parameter "defType"
-    .parameter "defPackage"
+    
+    
+    
 
     .prologue
     .line 131
@@ -450,8 +450,8 @@
 
 .method public getQuantityText(II)Ljava/lang/CharSequence;
     .locals 1
-    .parameter "id"
-    .parameter "quantity"
+    
+    
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/content/res/Resources$NotFoundException;
@@ -473,7 +473,7 @@
 
 .method public getStringArray(I)[Ljava/lang/String;
     .locals 1
-    .parameter "id"
+    
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/content/res/Resources$NotFoundException;
@@ -495,7 +495,7 @@
 
 .method public getText(I)Ljava/lang/CharSequence;
     .locals 1
-    .parameter "id"
+    
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/content/res/Resources$NotFoundException;
@@ -517,8 +517,8 @@
 
 .method public getText(ILjava/lang/CharSequence;)Ljava/lang/CharSequence;
     .locals 1
-    .parameter "id"
-    .parameter "def"
+    
+    
 
     .prologue
     .line 116
@@ -535,7 +535,7 @@
 
 .method public getTextArray(I)[Ljava/lang/CharSequence;
     .locals 1
-    .parameter "id"
+    
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/content/res/Resources$NotFoundException;
@@ -557,8 +557,8 @@
 
 .method public openRawResource(ILandroid/util/TypedValue;)Ljava/io/InputStream;
     .locals 2
-    .parameter "id"
-    .parameter "value"
+    
+    
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/content/res/Resources$NotFoundException;
@@ -595,7 +595,7 @@
 
 .method public openRawResourceFd(I)Landroid/content/res/AssetFileDescriptor;
     .locals 1
-    .parameter "id"
+    
     .annotation system Ldalvik/annotation/Throws;
         value = {
             Landroid/content/res/Resources$NotFoundException;

@@ -16,7 +16,7 @@
 
 .method public static final unescape(Ljava/lang/String;)Ljava/lang/String;
     .locals 10
-    .parameter "st"
+    
 
     .prologue
     const/16 v5, 0x5c
