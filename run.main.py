@@ -6,14 +6,19 @@ import sys
 
 def main():
     parser = A.ArgumentParser(description="Program for obfuscating APK files")
+    parser.add_argument('-a', '--all', action='count', required=False, help="Enable all obfuscators")
     parser.add_argument('-i', '--infile', required=True, help="Input file name")
     parser.add_argument('-o', '--outfile', required=False, help="Output file name. Defaults to input file name (i.e. in place obfuscate)")
-    parser.add_argument('obf_list', nargs='+', choices = obfuscators.all_obfuscators, metavar = 'OBFUSCATOR', help="List of obfuscators to apply.")
+    parser.add_argument('-L', dest='obf_list', nargs='*', choices = obfuscators.all_obfuscators, metavar = 'OBFUSCATOR', help="List of obfuscators to apply.")
     args = parser.parse_args()
 
     infile = args.infile
     outfile = args.outfile or args.infile
     obf_list = args.obf_list
+    is_all = args.all
+    if is_all:
+        obf_list = obfuscators.all_obfuscators
+
     if(len(obf_list) != 0):
         if(outfile != infile):
             try:
