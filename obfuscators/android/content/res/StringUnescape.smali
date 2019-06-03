@@ -35,10 +35,10 @@
     invoke-direct {v4, v6}, Ljava/lang/StringBuilder;-><init>(I)V
 
     .line 9
-    .local v4, sb:Ljava/lang/StringBuilder;
+
     const/4 v2, 0x0
 
-    .local v2, i:I
+
     :goto_0
     invoke-virtual {p0}, Ljava/lang/String;->length()I
 
@@ -60,7 +60,7 @@
     move-result v0
 
     .line 11
-    .local v0, ch:C
+
     if-ne v0, v5, :cond_4
 
     .line 12
@@ -75,7 +75,7 @@
     move v3, v5
 
     .line 14
-    .local v3, nextChar:C
+
     :goto_1
     if-lt v3, v8, :cond_3
 
@@ -95,7 +95,7 @@
     move-result-object v1
 
     .line 16
-    .local v1, code:Ljava/lang/String;
+
     add-int/lit8 v2, v2, 0x1
 
     .line 17
@@ -382,7 +382,7 @@
     move-result v1
 
     .line 63
-    .local v1, code:I
+
     invoke-static {v1}, Ljava/lang/Character;->toChars(I)[C
 
     move-result-object v6

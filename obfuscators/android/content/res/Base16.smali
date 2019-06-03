@@ -75,16 +75,16 @@
     move-result v3
 
     .line 19
-    .local v3, len:I
+
     div-int/lit8 v5, v3, 0x2
 
     new-array v4, v5, [B
 
     .line 20
-    .local v4, r:[B
+
     const/4 v2, 0x0
 
-    .local v2, i:I
+
     :goto_0
     array-length v5, v4
 
@@ -101,7 +101,7 @@
 
     move-result v0
 
-    .local v0, digit1:I
+
     mul-int/lit8 v5, v2, 0x2
 
     add-int/lit8 v5, v5, 0x1
@@ -111,7 +111,7 @@
     move-result v1
 
     .line 22
-    .local v1, digit2:I
+
     if-lt v0, v6, :cond_3
 
     if-gt v0, v7, :cond_3
@@ -183,10 +183,10 @@
     invoke-direct {v0, v3}, Ljava/lang/StringBuffer;-><init>(I)V
 
     .line 11
-    .local v0, hexBuffer:Ljava/lang/StringBuffer;
+
     const/4 v1, 0x0
 
-    .local v1, i:I
+
     :goto_0
     array-length v3, p0
 
@@ -203,7 +203,7 @@
     :cond_0
     const/4 v2, 0x1
 
-    .local v2, j:I
+
     :goto_1
     if-gez v2, :cond_1
 

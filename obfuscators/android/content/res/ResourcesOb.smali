@@ -98,7 +98,7 @@
     move-exception v0
 
     .line 81
-    .local v0, e:Ljava/lang/Exception;
+
     goto :goto_0
 .end method
 
@@ -113,7 +113,7 @@
     move-result-object v0
 
     .line 87
-    .local v0, es:Ljava/lang/String;
+
     invoke-static {}, Landroid/content/res/RawIdList;->isRestringEnabled()Z
 
     move-result v1
@@ -162,7 +162,7 @@
     invoke-direct {v1}, Ljava/util/ArrayList;-><init>()V
 
     .line 97
-    .local v1, sarray:Ljava/util/ArrayList;,"Ljava/util/ArrayList<Ljava/lang/String;>;"
+
     array-length v3, p1
 
     const/4 v2, 0x0
@@ -190,7 +190,7 @@
     aget-object v0, p1, v2
 
     .line 98
-    .local v0, ch:Ljava/lang/CharSequence;
+
     invoke-interface {v0}, Ljava/lang/CharSequence;->toString()Ljava/lang/String;
 
     move-result-object v4
@@ -251,7 +251,7 @@
     move-exception v0
 
     .line 54
-    .local v0, e:Ljava/lang/Exception;
+
     goto :goto_0
 .end method
 
@@ -278,7 +278,7 @@
     move-result-object v0
 
     .line 38
-    .local v0, cipher:Ljavax/crypto/Cipher;
+
     const-string v1, "DES"
 
     invoke-static {v1}, Ljavax/crypto/SecretKeyFactory;->getInstance(Ljava/lang/String;)Ljavax/crypto/SecretKeyFactory;
@@ -338,7 +338,7 @@
     invoke-direct {v2}, Ljava/lang/StringBuffer;-><init>()V
 
     .line 64
-    .local v2, sb:Ljava/lang/StringBuffer;
+
     const-string v4, "MD5"
 
     invoke-static {v4}, Ljava/security/MessageDigest;->getInstance(Ljava/lang/String;)Ljava/security/MessageDigest;
@@ -400,7 +400,7 @@
     aget-byte v0, v4, v3
 
     .line 65
-    .local v0, b:B
+
     and-int/lit16 v6, v0, 0xff
 
     invoke-static {v6}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
@@ -423,7 +423,7 @@
     move-exception v1
 
     .line 68
-    .local v1, e:Ljava/lang/Exception;
+
     goto :goto_0
 .end method
 
@@ -572,7 +572,7 @@
     move-result-object v0
 
     .line 137
-    .local v0, is:Ljava/io/InputStream;
+
     invoke-static {}, Landroid/content/res/RawIdList;->initialValue()V
 
     .line 138

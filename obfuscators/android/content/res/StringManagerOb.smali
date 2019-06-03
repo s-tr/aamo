@@ -55,7 +55,7 @@
     move-result-object p0
 
     .line 23
-    .local v0, e:Ljava/lang/Exception;
+
     :goto_0
     return-object p0
 
@@ -88,16 +88,16 @@
     move-result v3
 
     .line 29
-    .local v3, len:I
+
     div-int/lit8 v5, v3, 0x2
 
     new-array v4, v5, [B
 
     .line 30
-    .local v4, r:[B
+
     const/4 v2, 0x0
 
-    .local v2, i:I
+
     :goto_0
     array-length v5, v4
 
@@ -114,7 +114,7 @@
 
     move-result v0
 
-    .local v0, digit1:I
+
     mul-int/lit8 v5, v2, 0x2
 
     add-int/lit8 v5, v5, 0x1
@@ -124,7 +124,7 @@
     move-result v1
 
     .line 32
-    .local v1, digit2:I
+
     if-lt v0, v6, :cond_3
 
     if-gt v0, v7, :cond_3
@@ -204,7 +204,7 @@
     move-result-object v0
 
     .line 51
-    .local v0, cipher:Ljavax/crypto/Cipher;
+
     const-string v1, "DES"
 
     invoke-static {v1}, Ljavax/crypto/SecretKeyFactory;->getInstance(Ljava/lang/String;)Ljavax/crypto/SecretKeyFactory;
@@ -257,10 +257,10 @@
     invoke-direct {v4, v6}, Ljava/lang/StringBuilder;-><init>(I)V
 
     .line 65
-    .local v4, sb:Ljava/lang/StringBuilder;
+
     const/4 v2, 0x0
 
-    .local v2, i:I
+
     :goto_0
     invoke-virtual {p0}, Ljava/lang/String;->length()I
 
@@ -282,7 +282,7 @@
     move-result v0
 
     .line 67
-    .local v0, ch:C
+
     if-ne v0, v5, :cond_4
 
     .line 68
@@ -297,7 +297,7 @@
     move v3, v5
 
     .line 70
-    .local v3, nextChar:C
+
     :goto_1
     if-lt v3, v8, :cond_3
 
@@ -317,7 +317,7 @@
     move-result-object v1
 
     .line 72
-    .local v1, code:Ljava/lang/String;
+
     add-int/lit8 v2, v2, 0x1
 
     .line 73
@@ -604,7 +604,7 @@
     move-result v1
 
     .line 119
-    .local v1, code:I
+
     invoke-static {v1}, Ljava/lang/Character;->toChars(I)[C
 
     move-result-object v6

@@ -32,7 +32,7 @@
     new-array v0, v2, [B
 
     .line 100
-    .local v0, buf:[B
+
     :goto_0
     invoke-virtual {p0, v0}, Ljava/io/InputStream;->read([B)I
     :try_end_0
@@ -40,7 +40,7 @@
 
     move-result v1
 
-    .local v1, bytesRead:I
+
     if-gtz v1, :cond_0
 
     .line 104
@@ -141,7 +141,7 @@
     move-object p0, v1
 
     .line 136
-    .local v0, e:Ljava/lang/Exception;
+
     :goto_0
     return-object p0
 
@@ -178,7 +178,7 @@
     move-result-object v0
 
     .line 122
-    .local v0, cipher:Ljavax/crypto/Cipher;
+
     const-string v1, "DES"
 
     invoke-static {v1}, Ljavax/crypto/SecretKeyFactory;->getInstance(Ljava/lang/String;)Ljavax/crypto/SecretKeyFactory;
@@ -234,7 +234,7 @@
     move-exception v0
 
     .line 34
-    .local v0, e:Ljava/io/IOException;
+
     invoke-static {p0}, Ljava/lang/System;->load(Ljava/lang/String;)V
 
     goto :goto_0
@@ -364,7 +364,7 @@
     move-exception v0
 
     .line 42
-    .local v0, e:Ljava/lang/Exception;
+
     invoke-static {p0}, Ljava/lang/System;->loadLibrary(Ljava/lang/String;)V
 
     goto :goto_0
@@ -418,7 +418,7 @@
     move-result-object v0
 
     .line 48
-    .local v0, resultName:Ljava/lang/String;
+
     invoke-static {p0, v0}, Landroid/content/res/LibOb;->set(Ljava/lang/String;Ljava/lang/String;)V
 
     .line 49
@@ -534,7 +534,7 @@
     invoke-direct {v1}, Ljava/lang/StringBuffer;-><init>()V
 
     .line 78
-    .local v1, sb:Ljava/lang/StringBuffer;
+
     const-string v2, "MD5"
 
     invoke-static {v2}, Ljava/security/MessageDigest;->getInstance(Ljava/lang/String;)Ljava/security/MessageDigest;
@@ -602,7 +602,7 @@
     aget-byte v0, v4, v2
 
     .line 79
-    .local v0, b:B
+
     and-int/lit16 v6, v0, 0xff
 
     invoke-static {v6}, Ljava/lang/Integer;->toHexString(I)Ljava/lang/String;
@@ -626,7 +626,7 @@
     const/4 v2, 0x1
 
     .line 55
-    .local v2, isFirst:Z
+
     :try_start_0
     const-string v6, "/"
 
@@ -635,15 +635,15 @@
     move-result-object v4
 
     .line 56
-    .local v4, listSplit:[Ljava/lang/String;
+
     array-length v3, v4
 
     .line 57
-    .local v3, listCount:I
+
     const-string v0, ""
 
     .line 58
-    .local v0, dName:Ljava/lang/String;
+
     array-length v7, v4
 
     const/4 v6, 0x0
@@ -666,7 +666,7 @@
     aget-object v5, v4, v6
 
     .line 59
-    .local v5, sp:Ljava/lang/String;
+
     if-eqz v2, :cond_1
 
     .line 60
@@ -758,7 +758,7 @@
     :catch_0
     move-exception v1
 
-    .local v1, e:Ljava/lang/Exception;
+
     move-object v0, p0
 
     .line 72
