@@ -1,5 +1,6 @@
 import util as u
 import re
+import os.path
 
 
 def change_match_line(smali_line, class_name):

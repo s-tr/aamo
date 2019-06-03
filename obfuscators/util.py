@@ -10,6 +10,7 @@ import base64
 import md5
 from Crypto.Cipher import DES
 import os.path
+from os.path import join
 import shutil
 
 
@@ -72,7 +73,7 @@ def get_valid_op_code():  # Get the valid opcode list
 def move_decrypt_method():  # Move the decription routine into the apk class tree
     try:
         method_name = 'nvlEStringManager.smali'
-        copy_file(join(ob_dir(), method_name), join(base_dir(), 'smali', method_name))
+        copy_file(os.path.join(ob_dir(), method_name), os.path.join(base_dir(), 'smali', method_name))
     except OSError as ex:
         raise e.OpenToolException(str(ex) + '\nUnable to move Decrypytion Method')
 
@@ -265,7 +266,7 @@ def save_ids_repository(xml_file):  # Save the id resources repository
 def move_ids_xml():  # Move the id resources index into the value resource dir
     try:
         #windows
-        os.system("echo f | xcopy {0} {1}".format(os.path.join(ob_dir(),'ids.xml'), os.path.join(base_dir(),'res','values','ids.xml')))
+        copy_file(os.path.join(ob_dir(),'ids.xml'), os.path.join(base_dir(),'res','values','ids.xml'))
         #os.system('cp -R ' + ob_dir() + '/ids.xml ' + base_dir() + '/res/values/ids.xml') #unix
     except OSError as ex:
         raise e.OpenToolException(str(ex) + '\nUnable to move Ids xml file')
@@ -273,7 +274,7 @@ def move_ids_xml():  # Move the id resources index into the value resource dir
 
 def load_res_id_repository():  # Load the ids resource repository
     try:
-        return load_xml(join('res','values', 'ids.xml'))
+        return load_xml(os.path.join('res','values', 'ids.xml'))
     except e.LoadFileException:
         return None
     except e.FileNotFound:
@@ -346,7 +347,7 @@ def move_res_manager():
     mkdir(join(base_dir(), 'smali', 'android', 'content', 'res'))
     copy_file(join(ob_dir(), 'android','content', 'ContextWrapperOb.smali'), join(base_dir(), 'smali', 'android', 'content', 'ContextWrapperOb.smali'))
     copy_file(join(ob_dir(), 'android', 'content', 'res', 'Base16.smali'), join(base_dir(), 'smali', 'android', 'content', 'res', 'Base16.smali'))
-    copy_file(join(ob_dir(), 'android', 'content', 'res', 'ResourcesOb.smali'), joint(base_dir(), 'smali', 'android', 'content', 'res', 'ResourcesOb.smali')) 
+    copy_file(join(ob_dir(), 'android', 'content', 'res', 'ResourcesOb.smali'), join(base_dir(), 'smali', 'android', 'content', 'res', 'ResourcesOb.smali')) 
     copy_file(join(ob_dir(), 'android', 'content', 'res', 'StringUnescape.smali'), join(base_dir(), 'smali', 'android', 'content', 'res', 'StringUnescape.smali'))
     copy_file(join(ob_dir(), 'android', 'content', 'res', 'RawIdList.smali'), join(base_dir(), 'smali', 'android', 'content', 'res', 'RawIdList.smali'))
     copy_file(join(ob_dir(), 'android', 'content', 'res', 'LibOb.smali'), join(base_dir(), 'smali', 'android', 'content', 'res', 'LibOb.smali'))
@@ -366,7 +367,7 @@ def mkdir(path):
 
 def get_string_class():
     mkdir(join(base_dir(), 'smali', 'android', 'content', 'res'))
-    return get_text_file(join('andoir', 'content', 'res', 'StringManagerOb.smali'))
+    return get_text_file(join('android', 'content', 'res', 'StringManagerOb.smali'))
 
 
 def get_asset_class():
