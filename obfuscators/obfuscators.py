@@ -139,7 +139,7 @@ def design_apk(sample_file_name):  # Remove a signature from an apk file
             u.logger('DeSign: ' + sample_file_name)
         #NOTE: we dont need to remove META-INF because it will be just overwritten during signing
         #popen("rd /s /q {0}".format(os.path.join(sample_file_name, 'META-INF')))
-        #popen('zip -d ' + sample_file_name + ' /META-INF/*')  # Delete the META-INF folder from the apk root
+        popen('zip -d ' + sample_file_name + ' META-INF/*')  # Delete the META-INF folder from the apk root
     except OSError as ex:
         raise e.OpenToolException(str(ex) + '\nUnable to delete META-INF from ' + sample_file_name)
 
