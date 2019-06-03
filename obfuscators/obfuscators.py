@@ -6,6 +6,7 @@ import os
 import shutil
 from datetime import datetime
 import subprocess as sub
+import traceback as T
 
 import util as u
 import exception as e
@@ -451,7 +452,7 @@ def apply_dir(apk_path, obfuscator_to_apply, mode=0, retry=0):
         dir_path, filename = os.path.split(apk_path)
         obfuscate_sample(apk_path, obfuscator_to_apply, os.path.join(temp_dir, filename[:-4]))
     except e.AndroidLimitException as ex:
-        u.logger('### ERROR ### ' + str(ex) + ' ### ERROR ###')
+        u.logger('### ERROR ### ' + T.format_exc())
         u.logger('### WARNING ###')
         if mode == 0:
             apply_dir(filename, [o for o in obfuscator_to_apply if o != 'Reflection'], 1)
@@ -460,14 +461,14 @@ def apply_dir(apk_path, obfuscator_to_apply, mode=0, retry=0):
         else:
             print("mode!=0?")
     except e.AndroidRandomException as ex:
-        u.logger('### ERROR ### ' + str(ex) + ' ### ERROR ###')
+        u.logger('### ERROR ### ' + T.format_exc())
         if retry == 0:
             u.logger('### WARNING ###')
             apply_dir(filename, obfuscator_to_apply, mode, retry + 1)
         else:
             u.logger('### FAILURE ###')
     except Exception as ex:
-        u.logger('### ERROR ### ' + str(ex) + ' ### ERROR ###')
+        u.logger('### ERROR ### ' + T.format_exc())
         u.logger('### FAILURE ###')
 
 
@@ -489,7 +490,7 @@ all_obfuscators = ['Resigned',
                    'Raw',
                    'Resource',
                    'Lib',
-                   'Restring',
+                   #'Restring',
                    'Manifest',
                    'Reflection'
                    ]
