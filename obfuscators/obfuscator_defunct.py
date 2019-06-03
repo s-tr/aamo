@@ -23,8 +23,6 @@ def append_defunct_class_now(base_dir, curr_dir, incremental):
     
     defunct_class = u.get_defunct_class()
     random_class_name = u.get_random(True, 16) + str(incremental)
-
-    u.logger("base_dir = {}\ncurr_dir = {}\nincremental = {}\nclass_path = {}".format(base_dir, curr_dir, incremental, class_path))
     
     defunct_class = defunct_class.replace('*ClassName*', os.path.join(class_path, random_class_name))  # Random class name
     defunct_class = defunct_class.replace('*String1*', u.get_random(True, 16))  # Random string
