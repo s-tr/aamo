@@ -1,100 +1,34 @@
-AAMO: Another Android Malware Obfuscator
+YAAMO: Yet Another Android Malware Obfuscator
 ========================================
 
-We release our set of code-obfuscation scripts tailored for Android
-applications. We assume that the original application can be disassembled into
-Smali.
-
+YAAMO is based on [AAMO](https://github.com/necst/aamo) by [NECSTLab](https://github.com/necst), with the improvements given by user [Aleksandr Pilgun](https://github.com/necst). It is based on apktool 2.2.4 and smali/baksmali 2.2.1.
 
 Usage
 -----
 
-    $ mkdir dir_with_apks_to_obfuscate/     # fill the dir with some APKs
-    $ vim obfuscators/obfuscators.py
+```
+     $ run.main.py [-h] [-a] -i INFILE [-o OUTFILE]
+                   [-L [OBFUSCATOR [OBFUSCATOR ...]]]
+```
 
-Set the `obfuscator_to_apply` variable to define the list of obfuscators you
-want to apply. For example:
+`OBFUSCATOR` is one of the following:
 
+```
     obfuscator_to_apply = [
-        'Resigned',
-        'Alignment',
-        'Rebuild',
-        'Fields',
-        'Debug',
-        'Indirections',
-        'Defunct',
-        'StringEncrypt',
-        'Renaming',
-        'Reordering',
-        'Goto',
-        'ArithmeticBranch',
-        'Nop',
-        'Asset',
-        'Intercept',
-        'Raw',
-        'Resource',
-        'Lib',
-        'Restring',
-        'Manifest',
-        'Reflection']
-
-You can choose a subset of obfuscators (recommended).
-
-    $ python obfuscators/obfuscators.py
-
-Enjoy your obfuscated APKs.
-
+        'Resigned', 'Alignment',    'Rebuild',   'Fields',
+        'Debug',    'Indirections', 'Defunct',   'StringEncrypt',
+        'Renaming', 'Reordering',   'Goto',      'ArithmeticBranch',
+        'Nop',      'Asset',        'Intercept', 'Raw',
+        'Resource', 'Lib',          'Manifest',  'Reflection']
+```
 
 Obfuscation Operators
 ---------------------
 
-We currently support:
-
-* Android specific
-  * Repackaging
-  * Reassembly
-  * Re-alignment
-
-* Simple control-flow modifications
-  * Junk code insertion
-  * Debug symbols stripping
-  * Defunct code insertion
-  * Unconditional jump insertion
-
-* Advanced control-flow modifications
-  * Call indirection
-  * Code reordering
-  * Reflection
-  * Opaque predicate insertion
-
-* Renaming
-  * Non-code files and resource renaming
-  * Fields and methods renaming
-  * Package renaming
-
-* Encryption
-  * Resource encryption (asset files)
-  * Native code encryption
-  * Data encryption (strings)
-
+[[TODO]]
 
 Bugs
 ----
 
-There might be plenty of bugs. Feel free to fork and send us pull requests!
+* Obfuscating large DEX files may cause the method count to grow over the maximum 65,536.
 
-
-Contributors
-------------
-
-* Federico Pellegatta (main developer)
-* [Federico Maggi](https://github.com/phretor) (advisor, maintainer)
-* [Mila Dalla Preda](https://profs.sci.univr.it/~dallapre) (advisor, contributor)
-
-
-Support
--------
-
-AAMO is supported by the [FACE](http://www.face-project.it) research project,
-under the FIRB 2013 funding program of the Italian Ministry of University and
-Research (grant agreement N. RBFR13AJFT).
